@@ -18,6 +18,7 @@ public class SwipDragViewLayout extends RelativeLayout {
     private ViewDragHelper viewDragHelper;
     private View springView;
     private Point springPoint = new Point();
+    private View bigTextView;
 
     public SwipDragViewLayout(Context context) {
         super(context);
@@ -98,8 +99,11 @@ public class SwipDragViewLayout extends RelativeLayout {
                  if(releasedChild == springView) {
                      Log.d(TAG,"SPRING");
                      //当拖动的view为要回弹的view的时候  执行回弹效果
-                     viewDragHelper.settleCapturedViewAt(0,0);
-                     invalidate();
+                   //  viewDragHelper.settleCapturedViewAt(0,0);
+
+
+                     viewDragHelper.smoothSlideViewTo(releasedChild,0,0);
+                     invalidate();//调用invalidate会
 
                  }
              }
@@ -123,6 +127,7 @@ public class SwipDragViewLayout extends RelativeLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         springView  = getChildAt(1);
+        bigTextView  = getChildAt(2);
     }
     /**
      *  在ViewGroup的方法回调当中得到对应View的初始化位置
