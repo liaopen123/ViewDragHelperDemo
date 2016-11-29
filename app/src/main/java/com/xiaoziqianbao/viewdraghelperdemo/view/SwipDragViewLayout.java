@@ -1,6 +1,7 @@
 package com.xiaoziqianbao.viewdraghelperdemo.view;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -15,6 +16,8 @@ import android.widget.RelativeLayout;
 public class SwipDragViewLayout extends RelativeLayout {
     private static final String TAG = "SwipDragViewLayout";
     private ViewDragHelper viewDragHelper;
+    private View springView;
+    private Point springPoint = new Point();
 
     public SwipDragViewLayout(Context context) {
         super(context);
@@ -81,7 +84,26 @@ public class SwipDragViewLayout extends RelativeLayout {
                  final int newBottom = Math.min(Math.max(top, topBound), bottomBound);
                  return newBottom;
              }
-        });
+
+             /**
+              * 松手时候的回调
+              * @param releasedChild
+              * @param xvel X方向的加速度
+              * @param yvel Y放向的加速度
+              */
+             @Override
+             public void onViewReleased(View releasedChild, float xvel, float yvel) {
+                 super.onViewReleased(releasedChild, xvel, yvel);
+                 Log.d(TAG,"onViewReleased:+xvel"+xvel+"yvel"+yvel);
+                 if(releasedChild == springView) {
+                     Log.d(TAG,"SPRING");
+                     //当拖动的view为要回弹的view的时候  执行回弹效果
+                     viewDragHelper.settleCapturedViewAt(0,0);
+                     invalidate();
+
+                 }
+             }
+         });
     }
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
@@ -94,5 +116,33 @@ public class SwipDragViewLayout extends RelativeLayout {
         return true;
     }
 
+    /**
+     *  在ViewGroup的方法回调当中找到View
+     */
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        springView  = getChildAt(1);
+    }
+    /**
+     *  在ViewGroup的方法回调当中得到对应View的初始化位置
+     *  用于回弹时候返回原位置
+     */
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        springPoint.x = springView.getLeft();
+        springPoint.y = springView.getTop();
+    }
+
+    @Override
+    public void computeScroll()
+    {
+        if(viewDragHelper.continueSettling(true))
+        {
+            invalidate();
+        }
+    }
 
 }
+    
