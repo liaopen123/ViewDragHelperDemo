@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaoziqianbao.viewdraghelperdemo.view.DragPhoneViewLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:gravity="center"
+            android:text="打电话"
+            android:id="@+id/view_red"
+            android:background="#ff0000"
+          android:layout_alignParentRight="true"
+            android:layout_width="60dp"
+            android:layout_height="60dp"/>
+        <TextView
+            android:gravity="center"
+            android:text="发短信"
+            android:layout_toLeftOf="@+id/view_red"
+            android:id="@+id/view_green"
+            android:background="#00ff00"
+            android:layout_width="60dp"
+            android:layout_height="60dp"/>
+
+    </RelativeLayout>
+<RelativeLayout
+    android:background="#eeeeee"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:gravity="center"
+        android:text="Pony"
+        android:drawableLeft="@mipmap/ic_launcher"
+        android:layout_width="match_parent"
+        android:layout_height="60dp" />
+</RelativeLayout>
+
+</com.xiaoziqianbao.viewdraghelperdemo.view.DragPhoneViewLayout>
