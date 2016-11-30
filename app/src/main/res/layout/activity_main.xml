@@ -12,13 +12,14 @@
         android:text="Hello World!" />
 
     <TextView
+        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="我是回弹view" />
 
     <TextView
         android:textSize="50sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="我是任意拖动View" />
 </com.xiaoziqianbao.viewdraghelperdemo.view.SwipDragViewLayout>

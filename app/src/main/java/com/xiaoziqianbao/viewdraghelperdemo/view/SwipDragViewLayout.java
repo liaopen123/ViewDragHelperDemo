@@ -19,6 +19,7 @@ public class SwipDragViewLayout extends RelativeLayout {
     private View springView;
     private Point springPoint = new Point();
     private View bigTextView;
+    private View dragEdgeView;
 
     public SwipDragViewLayout(Context context) {
         super(context);
@@ -66,6 +67,17 @@ public class SwipDragViewLayout extends RelativeLayout {
                  return newLeft;
 
              }
+             @Override
+             public int getViewHorizontalDragRange(View child)
+             {
+                 return getMeasuredWidth()-child.getMeasuredWidth();
+             }
+
+             @Override
+             public int getViewVerticalDragRange(View child)
+             {
+                 return getMeasuredHeight()-child.getMeasuredHeight();
+             }
 
              /**
               * 同clampViewPositionHorizontal，用来控制拖动的View 竖直方向的范围
@@ -99,15 +111,23 @@ public class SwipDragViewLayout extends RelativeLayout {
                  if(releasedChild == springView) {
                      Log.d(TAG,"SPRING");
                      //当拖动的view为要回弹的view的时候  执行回弹效果
-                   //  viewDragHelper.settleCapturedViewAt(0,0);
+                     viewDragHelper.settleCapturedViewAt(springPoint.x,springPoint.y);
 
 
-                     viewDragHelper.smoothSlideViewTo(releasedChild,0,0);
+                    // viewDragHelper.smoothSlideViewTo(releasedChild,0,0);
                      invalidate();//调用invalidate会
 
                  }
              }
+
+             @Override
+             public void onEdgeDragStarted(int edgeFlags, int pointerId) {
+                 super.onEdgeDragStarted(edgeFlags, pointerId);
+                 Log.d(TAG,"onEdgeDragStarted");
+                 viewDragHelper.captureChildView(dragEdgeView, pointerId);
+             }
          });
+        viewDragHelper.setEdgeTrackingEnabled(ViewDragHelper.EDGE_ALL);//用来设定感应的边缘
     }
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
@@ -126,8 +146,15 @@ public class SwipDragViewLayout extends RelativeLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        dragEdgeView  = getChildAt(0);
         springView  = getChildAt(1);
         bigTextView  = getChildAt(2);
+        bigTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG,"11111");
+            }
+        });
     }
     /**
      *  在ViewGroup的方法回调当中得到对应View的初始化位置
@@ -148,6 +175,8 @@ public class SwipDragViewLayout extends RelativeLayout {
             invalidate();
         }
     }
+
+
 
 }
     
